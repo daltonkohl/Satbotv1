@@ -132,7 +132,18 @@ def user_detail(request, id):
 
 
 def login(request):
+
+    """username = ""
+    password = ""
+    user = get_object_or_404(User, email=username)
+    if(username == user.email and password == user.password):
+        #send request back 
+  
+    else:
+        #raise exception"""
+
     return render(request, 'login.html')
+
 
 
 def chatscreen(request):
