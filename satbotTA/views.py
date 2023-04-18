@@ -1,6 +1,9 @@
-from django.shortcuts import render
+from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect, render
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
+import json
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -133,21 +136,33 @@ def user_detail(request, id):
 
 def login(request):
 
-    """username = ""
-    password = ""
-    user = get_object_or_404(User, email=username)
-    if(username == user.email and password == user.password):
-        #send request back 
-  
-    else:
-        #raise exception"""
+    if(request.method == 'GET'):
+        return render(request, 'login.html')
+    
+    elif(request.method == 'POST'):
+        username = request.POST['username']
+        password = request.POST['password']
 
-    return render(request, 'login.html')
+        user = get_object_or_404(User, email = username)
+        if(user.password == password):
+            return redirect(f'/satbotTA/chatScreen/{user.id}', {'results': {'id':1}})
+            
+        else:
+            return HttpResponse("Invalid username or password", status = status.HTTP_401_UNAUTHORIZED)
+        
+
+    return HttpResponse("Method was not allowed", status = status.HTTP_405_METHOD_NOT_ALLOWED)
+   
 
 
 
-def chatscreen(request):
-    return render(request, 'chatscreen.html')
+def chatscreen(request, id):
+    if(request.method == 'GET'):
+        return render(request, 'chatscreen.html')
+    elif(request.method == 'POST'):
+        #chat = request.POST['chat']
+        print(f"****************{request.POST}******************")
+        return HttpResponse("test")
 
 def signup(request):
     return render(request, 'signup.html')

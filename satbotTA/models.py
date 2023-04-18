@@ -4,7 +4,16 @@ from django.db import models
 
 class Chat(models.Model):
     #fields
+    SENDER_USER = 'U'
+    SENDER_BOT = 'B'
+
+    SENDER_CHOICES = [
+        (SENDER_USER, 'User'),
+        (SENDER_BOT, 'Bot')
+    ]
+
     user =  models.ForeignKey('User', on_delete=models.PROTECT)
+    sender = models.CharField(max_length=1, choices=SENDER_CHOICES, default = SENDER_USER)
     text = models.TextField()
     course = models.ForeignKey('Course', on_delete= models.PROTECT, null=True, related_name= 'chats')
     timestamp = models.DateTimeField(auto_now_add=True)
