@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 import json
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -160,9 +160,10 @@ def chatscreen(request, id):
     if(request.method == 'GET'):
         return render(request, 'chatscreen.html')
     elif(request.method == 'POST'):
-        #chat = request.POST['chat']
-        print(f"****************{request.POST}******************")
-        return HttpResponse("test")
+        chat = request.POST.get('chat')
+        print(f"****************{chat}******************")
+        data = {'response': 'Sup Keegs'}
+        return JsonResponse(data)
 
 def signup(request):
     return render(request, 'signup.html')

@@ -8,6 +8,8 @@ function getCookie(name) {
   return cookieValue ? cookieValue[2] : null;
 }
 
+
+
 function sendPostRequest(message){
   const url = window.location.href;
 
@@ -16,19 +18,26 @@ function sendPostRequest(message){
 
   const csrftoken = getCookie('csrftoken');
 
-  fetch(url + "?" + JSON.stringify(data), {
+  return fetch(url + "?" + JSON.stringify(data), {
     method : 'POST',
     headers: {
       'X-CSRFToken': csrftoken
     },
     body: data
-  });
+  })
+  .then(response => response.json())
+  .then(data => data.response)
+  .catch(error => console.error(error));
 }
 
 function addUserMessage() {
   const userMessage = input.value.trim();
 
-  sendPostRequest(userMessage);
+  var postResponse = ""
+  sendPostRequest(userMessage)
+    .then(response => {
+      postResponse = response
+    });
 
 
   if (!userMessage) return;
@@ -46,11 +55,13 @@ function addUserMessage() {
   input.value = '';
   input.focus();
 
-  setTimeout(addBotMessage(), 1000);
+  setTimeout(() => {
+    addBotMessage(postResponse);
+   }, 1000);
 }
 
-function addBotMessage() {
-  
+function addBotMessage(responseMessage) {
+  /*
   const botMessages = [
     'Hi there! How can I help you today?',
     'What kind of problem are you having?',
@@ -59,6 +70,8 @@ function addBotMessage() {
 
   const randomIndex = Math.floor(Math.random() * botMessages.length);
   const botMessage = botMessages[randomIndex];
+  */
+  const botMessage = responseMessage
 
 
   const messageContainer = document.createElement('div');
