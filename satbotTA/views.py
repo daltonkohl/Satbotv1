@@ -140,15 +140,13 @@ def login(request):
         return render(request, 'login.html')
     
     elif(request.method == 'POST'):
-        username = request.POST['username']
-        password = request.POST['password']
-
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         user = get_object_or_404(User, email = username)
         if(user.password == password):
-            return redirect(f'/satbotTA/chatScreen/{user.id}', {'results': {'id':1}})
-            
+            return redirect(f'/satbotTA/chatScreen/{user.id}', {'results': {'id':1}})   
         else:
-            return HttpResponse("Invalid username or password", status = status.HTTP_401_UNAUTHORIZED)
+            return JsonResponse({'response':'unauthorized'})
         
 
     return HttpResponse("Method was not allowed", status = status.HTTP_405_METHOD_NOT_ALLOWED)
@@ -162,7 +160,7 @@ def chatscreen(request, id):
     elif(request.method == 'POST'):
         chat = request.POST.get('chat')
         print(f"****************{chat}******************")
-        data = {'response': 'Sup Keegs'}
+        data = {'response': 'Hello World'}
         return JsonResponse(data)
 
 def signup(request):
