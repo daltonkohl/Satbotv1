@@ -3,7 +3,8 @@ function for creating a post request to connect to the server.
 
 */
 
-const input = document.querySelector('input[type="text"]');
+const userField = document.querySelector('input[type="text"]');
+const passField = document.querySelector('input[type="password"]');
 const loginbtn = document.getElementById('login-btn');
 
 function getCookie(name) {
@@ -31,6 +32,11 @@ function sendPostRequest() {
             },
             body: data
         })
+        .then(response => {
+            if(response.redirected){
+                window.location.href = response.url
+            }
+        })
         .then(response => response.json())
         .then(data => data.response)
         .then(response => resolve(response))
@@ -41,7 +47,7 @@ function sendPostRequest() {
     });
 
 
-}
+} 
 
 function handleLoginAtempt() {
 
@@ -58,7 +64,12 @@ function handleLoginAtempt() {
 }
 
 loginbtn.addEventListener('click', handleLoginAtempt);
-input.addEventListener('keydown', (event) => {
+userField.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        handleLoginAtempt();
+    }
+});
+passField.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
         handleLoginAtempt();
     }

@@ -144,7 +144,7 @@ def login(request):
         password = request.POST.get('password')
         user = get_object_or_404(User, email = username)
         if(user.password == password):
-            return redirect(f'/satbotTA/chatScreen/{user.id}', {'results': {'id':1}})   
+            return redirect(f'/satbotTA/chatScreen/{user.id}')   
         else:
             return JsonResponse({'response':'unauthorized'})
         
