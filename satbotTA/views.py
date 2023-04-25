@@ -144,7 +144,10 @@ def login(request):
         password = request.POST.get('password')
         user = get_object_or_404(User, email = username)
         if(user.password == password):
-            return redirect(f'/satbotTA/chatScreen/{user.id}')   
+            if(user.user_type == 'S'):
+                return redirect(f'/satbotTA/chatScreen/{user.id}')
+            elif(user.user_type == 'P'):
+                return redirect(f'/satbotTA/professor/{user.id}') 
         else:
             return JsonResponse({'response':'unauthorized'})
         
@@ -165,5 +168,21 @@ def chatscreen(request, id):
 
 def signup(request):
     return render(request, 'signup.html')
+
+
+def professor(request, id):
+    if(request.method == 'GET'):
+        #user = get_object_or_404(User, pk=id)
+        #intents = Intent.objects.filter(professor = user)
+        return render(request, 'professor.html')
+    elif(request.method == 'POST'):
+        if(request.POST.get('type') == 'add-intent'):
+            question = request.POST.get('question')
+            answer = request.POST.get('answer')
+            new_intent = Intent(intent = question, response = answer)
+            new_intent.save()
+            data = {'response': {'intent' : question}}
+            return JsonResponse(data)
+
 
 
