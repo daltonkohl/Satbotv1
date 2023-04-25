@@ -2,15 +2,15 @@
 <html lang="en">
 {% load static %}
 
-
-
 <head>
     <meta charset="utf-8">
     <title>SatBot - Log In</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css"
-        integrity="sha512-iAL5FW5fX9uUMYtZB7V1BhJSjLSCov+zwOATyF7zyu0+8JdXVgIRN5If66V7b1EgNLjgx7B/2LO43bp03nAbnQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+
+
+
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}" type="text/css">
 </head>
 <style>
     .logo-img {
@@ -28,32 +28,27 @@
     <main class="container-fluid mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <div class="card p-4 rounded-lg shadow-sm">
-                    <h2 class="card-title text-center mb-4" style="font-family: 'Product Sans', sans-serif;">Welcome to
-                        SatBot</h2>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Username"
-                            style="font-family: 'Product Sans', sans-serif;" required>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Password"
-                            style="font-family: 'Product Sans', sans-serif;" required>
-                    </div>
-                    <div class="d-grid gap-2 mt-4">
-                        <button type="button" id ="login-btn" class="btn btn-primary"
-                            style="font-family: 'Product Sans', sans-serif;">Log In</button>
-                        <form action="chatScreen.html"></form>
-                    </div>
-                    <div class="text-center mt-3">
-                        <p class="mb-0">Don't have an account yet? <a href="{% url 'signup' %}"
-                                style="font-family: 'Product Sans', sans-serif">Click Here</a></p>
-                    </div>
+                <h2 class="card-title text-center mb-4" style="font-family: 'Product Sans', sans-serif;">Welcome to
+                    SatBot</h2>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Username"
+                        style="font-family: 'Product Sans', sans-serif;" required>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                        style="font-family: 'Product Sans', sans-serif;" required>
+                </div>
+                <div class="d-grid gap-2 mt-4">
+                    <button type="button" id = "login-btn" class="btn btn-primary" style="font-family: 'Product Sans', sans-serif;">Log
+                        In</button>
+                    <form action="chatScreen.html"></form>
+                </div>
+                <div class="text-center mt-3">
+                    <p class="mb-0">Don't have an account yet? <a href="{% url 'signup' %}"
+                            style="font-family: 'Product Sans', sans-serif">Click Here</a></p>
                 </div>
             </div>
         </div>
     </main>
 
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"
-        integrity="sha512-mZ1Iy+V7by8B4L4Y7yq+OZ5c5o5AS9ZGJzZVRkBTliEhJ//47R+SDa1yjK1vLGaWdJ8rSEzrKj3m2b"></script>
     <script src="{% static 'js/login.js' %}"></script> 

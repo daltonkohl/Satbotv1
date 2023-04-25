@@ -36,6 +36,10 @@ function sendPostRequest() {
             if(response.redirected){
                 window.location.href = response.url
             }
+            else{
+                console.log(response);
+                return response;
+            }
         })
         .then(response => response.json())
         .then(data => data.response)
