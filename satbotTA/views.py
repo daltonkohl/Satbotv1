@@ -9,6 +9,10 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from .models import Chat, Course, IncompleteQuestion, Intent, User
 from .serializers import ChatSerializer, CourseSerializer, IncompleteQuestionSerializer, IntentSerializer, UserSerializer
+from .NN import bot
+from .NN import train
+
+
 
 # Create your views here.
 
@@ -144,7 +148,10 @@ def login(request):
         password = request.POST.get('password')
         user = get_object_or_404(User, email = username)
         if(user.password == password):
-            return redirect(f'/satbotTA/chatScreen/{user.id}')   
+            if(user.user_type == 'S'):
+                return redirect(f'/satbotTA/chatScreen/{user.id}')
+            elif(user.user_type == 'P'):
+                return redirect(f'/satbotTA/professor/{user.id}') 
         else:
             return JsonResponse({'response':'unauthorized'})
         
@@ -160,10 +167,44 @@ def chatscreen(request, id):
     elif(request.method == 'POST'):
         chat = request.POST.get('chat')
         print(f"****************{chat}******************")
-        data = {'response': 'Hello World'}
+        botResponse = bot.conversate(chat)
+        print(f"****************{botResponse}******************")
+        data = {'response': str(botResponse)}
         return JsonResponse(data)
 
 def signup(request):
     return render(request, 'signup.html')
+
+
+def professor(request, id):
+    if(request.method == 'GET'):
+        #user = get_object_or_404(User, pk=id)
+        #intents = Intent.objects.filter(professor = user)
+        return render(request, 'professor.html')
+    elif(request.method == 'POST'):
+        if(request.POST.get('type') == 'add-intent'):
+            question = request.POST.get('question')
+            answer = request.POST.get('answer')
+
+            # Open data file, save data to dictionary
+            with open('satbotTA/NN/dataset.json', 'r') as f:
+                data = json.load(f)
+
+            nextQ = len(data['data']) + 1
+            data['data'].append({'tag': f'Q{nextQ}', 'patterns': [question], 'responses': [answer]})
+
+            with open('satbotTA/NN/dataset.json', 'w') as json_file:
+                json.dump(data, json_file, 
+                        indent=4,  
+                        separators=(',',': '))
+            
+
+            new_intent = Intent(intent = question, response = answer)
+            new_intent.save()
+            data = {'response': {'intent' : question}}
+            train.train()
+            return JsonResponse(data)
+        
+
 
 
